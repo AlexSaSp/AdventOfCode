@@ -30,3 +30,21 @@
 *.exe
 *.out
 *.app
+
+# ignore files without extension
+*
+!/**/
+!*.*
+
+# ignore example and input files
+example*.*
+input*.*
+parsed.txt
+regex101.txt
+
+# haskell
+*.hi
+*.o
+
+# vscode
+.vscode
