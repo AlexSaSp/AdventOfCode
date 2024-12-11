@@ -7,7 +7,7 @@ int get_score(std::vector<std::vector<int>>& map, const std::pair<size_t, size_t
     if (map[start.first][start.second] == 9) {
         // map[start.first][start.second] = -1; // uncomment to get solution for part 1
         return 1;
-        }
+    }
     int score = 0;
     if (start.first > 0 && map[start.first - 1][start.second] == map[start.first][start.second] + 1) {
         score += get_score(map, std::make_pair(start.first - 1, start.second));
