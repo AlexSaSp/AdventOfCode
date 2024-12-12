@@ -37,7 +37,8 @@ getStonesCache depth l cache
             right = read (drop (length (show n) `div` 2) (show n))
             (resultLeft, cacheLeft) = getStonesCache (depth - 1) [left] cache
             (resultRight, cacheRight) = getStonesCache (depth - 1) [right] cacheLeft
-            (dataTail, cacheTail) = getStonesCache depth (tail l) (Map.insert (depth, head l) (resultLeft + resultRight) cacheRight)
+            (dataTail, cacheTail) = getStonesCache depth (tail l)
+                (Map.insert (depth, head l) (resultLeft + resultRight) cacheRight)
         in
             (resultLeft + resultRight + dataTail, cacheTail)
     | otherwise
