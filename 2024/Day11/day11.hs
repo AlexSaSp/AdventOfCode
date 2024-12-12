@@ -1,11 +1,12 @@
 import Data.List.Split (splitOn)
+import Data.List (genericLength)
 import System.Environment (getArgs, getProgName)
 import qualified Data.Map as Map
 
-parse :: String -> [Int]
+parse :: String -> [Integer]
 parse s = map read (splitOn " " s)
 
-blink :: Int -> [Int]
+blink :: Integer -> [Integer]
 blink 0 = [1]
 blink n
     | even (length (show n)) = [read (take (length (show n) `div` 2) (show n)),
@@ -13,13 +14,13 @@ blink n
     | otherwise = [n * 2024]
 
 
-getStones :: Int -> [Int] -> [Int]
+getStones :: Integer -> [Integer] -> [Integer]
 getStones 0 l = l
 getStones maxBlinks l = getStones (maxBlinks - 1) (concatMap blink l)
 
-getStonesCache :: Int -> [Int] -> Map.Map (Int, Int) Int -> (Int, Map.Map (Int, Int) Int)
+getStonesCache :: Integer -> [Integer] -> Map.Map (Integer, Integer) Integer -> (Integer, Map.Map (Integer, Integer) Integer)
 getStonesCache _ [] c = (0,c)
-getStonesCache 0 l c = (length l, c)
+getStonesCache 0 l c = (genericLength l, c)
 getStonesCache depth l cache
     | Map.member (depth, head l) cache
         = let (dataTail, cacheTail) = getStonesCache depth (tail l) cache in
