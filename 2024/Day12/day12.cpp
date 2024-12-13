@@ -2,7 +2,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <unordered_set>
 
 typedef struct _node {
     char plant;
