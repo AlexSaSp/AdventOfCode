@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
                 for (int j = 0; j < DIM; j++) {
                     matrix[j][i] = cache[i][j];
                 }
-                vector[i] = cache[DIM][i] + PART_2_ADD;
+                vector[i] = cache[DIM][i] + PART_2_ADD; // Remove PART_2_ADD for part 1
             }
 
             input.push_back(std::make_pair(matrix, vector));
