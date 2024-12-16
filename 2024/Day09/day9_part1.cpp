@@ -55,6 +55,17 @@ int main(int argc, char** argv) {
         memory[i] = FREE_BLOCK;
     }
 
+    // Better solution by Vulcagon
+    // for (size_t i = 0; i < memory.size(); i++) {
+    //     if (memory[i] == FREE_BLOCK) {
+    //         memory[i] = memory[memory.size() - 1];
+    //         memory.pop_back();
+    //         while (memory[memory.size() - 1] == FREE_BLOCK) {
+    //             memory.pop_back();
+    //         }
+    //     }
+    // }
+
     long sum = 0;
     for (size_t i = 0; i < memory.size(); i++) {
         if (memory[i] != FREE_BLOCK) {
