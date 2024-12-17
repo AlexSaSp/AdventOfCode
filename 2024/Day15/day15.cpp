@@ -110,8 +110,10 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    std::pair<size_t, size_t> start_pos;
-    std::vector<std::string> map;
+    std::pair<size_t, size_t> start_pos_p1;
+    std::pair<size_t, size_t> start_pos_p2;
+    std::vector<std::string> map_p1;
+    std::vector<std::string> map_p2;
     std::queue<Direction> directions;
 
     std::string line;
@@ -140,12 +142,17 @@ int main(int argc, char** argv) {
                         line.push_back(EMPTY);
                         break;
                 }
-            } 
-            size_t start_x = line.find_first_of(POS);
-            if (start_x != std::string::npos) {
-                start_pos = std::make_pair(line_number, start_x);
             }
-            map.push_back(line);
+            size_t start_x_p1 = oldLine.find_first_of(POS);
+            if (start_x_p1 != std::string::npos) {
+                start_pos_p1 = std::make_pair(line_number, start_x_p1);
+            }
+            size_t start_x_p2 = line.find_first_of(POS);
+            if (start_x_p2 != std::string::npos) {
+                start_pos_p2 = std::make_pair(line_number, start_x_p2);
+            }
+            map_p1.push_back(oldLine);
+            map_p2.push_back(line);
             line_number++;
         } else {
             for (char c : line) {
@@ -159,15 +166,24 @@ int main(int argc, char** argv) {
     // for (size_t i = 0; i < map.size(); i++) {
     //     std::cout << map[i] << std::endl;
     // }
-    std::pair<size_t, size_t> current_pos = start_pos;
+    std::pair<size_t, size_t> current_pos_p1 = start_pos_p1;
+    std::pair<size_t, size_t> current_pos_p2 = start_pos_p2;
     while (!directions.empty()) {
         Direction current_direction = directions.front();
         directions.pop();
-        if (is_move_valid(current_pos, current_direction, map)) {
-            map[current_pos.first][current_pos.second] = EMPTY;
-            current_pos = move(current_pos, current_direction);
-            move_obstacles(current_pos, current_direction, map);
-            map[current_pos.first][current_pos.second] = POS;
+        // part 1
+        if (is_move_valid(current_pos_p1, current_direction, map_p1)) {
+            map_p1[current_pos_p1.first][current_pos_p1.second] = EMPTY;
+            current_pos_p1 = move(current_pos_p1, current_direction);
+            move_obstacles(current_pos_p1, current_direction, map_p1);
+            map_p1[current_pos_p1.first][current_pos_p1.second] = POS;
+        }
+        // part 2
+        if (is_move_valid(current_pos_p2, current_direction, map_p2)) {
+            map_p2[current_pos_p2.first][current_pos_p2.second] = EMPTY;
+            current_pos_p2 = move(current_pos_p2, current_direction);
+            move_obstacles(current_pos_p2, current_direction, map_p2);
+            map_p2[current_pos_p2.first][current_pos_p2.second] = POS;
         }
         // std::cout << "After 1 move" << std::endl;
         // for (size_t i = 0; i < map.size(); i++) {
@@ -175,15 +191,25 @@ int main(int argc, char** argv) {
         // } 
     }
 
-    long sum_gps = 0;
-    for (size_t i = 0; i < map.size(); i++) {
-        for (size_t j = 0; j < map[i].size(); j++) {
-            if (map[i][j] == BOX_L) {
-                sum_gps += 100 * i + j;
+    long sum_gps_p2 = 0;
+    for (size_t i = 0; i < map_p2.size(); i++) {
+        for (size_t j = 0; j < map_p2[i].size(); j++) {
+            if (map_p2[i][j] == BOX_L) {
+                sum_gps_p2 += 100 * i + j;
             }
         }
     }
 
-    std::cout << "Sum of boxes' gps: " << sum_gps << std::endl;
+    long sum_gps_p1 = 0;
+    for (size_t i = 0; i < map_p1.size(); i++) {
+        for (size_t j = 0; j < map_p1[i].size(); j++) {
+            if (map_p1[i][j] == OBS) {
+                sum_gps_p1 += 100 * i + j;
+            }
+        }
+    }
+
+    std::cout << "Sum of boxes' gps part 1: " << sum_gps_p1 << std::endl;
+    std::cout << "Sum of boxes' gps part 2: " << sum_gps_p2 << std::endl;
     return 0;
 }
