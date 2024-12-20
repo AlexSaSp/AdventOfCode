@@ -41,6 +41,8 @@ example*.*
 input*.*
 parsed.txt
 regex101.txt
+out*.txt
+test*.txt
 
 # haskell
 *.hi
