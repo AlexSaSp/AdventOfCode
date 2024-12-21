@@ -158,7 +158,7 @@ int main (int argc, char** argv) {
 
     u_int64_t reg_A_init = 0;
     for (size_t i = 0; i < program.size(); i++) {
-        reg_A_init = reg_A_init << adv_operands;
+        reg_A_init = reg_A_init << adv_operands; // reg_A_init *= 2^adv_operands
         std::vector<u_int8_t> output_ref;
         for (size_t j = program.size() - 1 - i; j < program.size(); j++) {
             output_ref.push_back(program[j]);
