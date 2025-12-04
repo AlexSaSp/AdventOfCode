@@ -69,6 +69,9 @@ int main(int argc, char **argv) {
     }
     printf("Sum of joltage ratings P1: %" PRIu64 "\n", sum_joltage_P1);
     printf("Sum of joltage ratings P2: %" PRIu64 "\n", sum_joltage_P2);
+    for (int i = 0; i < banks->size; ++i) {
+        free(banks->data[i]);
+    }
     destroyDynamicArray(banks);
     return 0;
 }
