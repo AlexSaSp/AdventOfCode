@@ -5,8 +5,8 @@
 
 typedef struct _dynamicArray {
     int *data;
-    int size;
-    int capacity;
+    size_t size;
+    size_t capacity;
 } DynamicArray;
 
 DynamicArray *createDynamicArray() {

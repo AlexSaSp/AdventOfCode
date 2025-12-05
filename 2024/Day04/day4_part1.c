@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
     }
 
     char buffer[BUFFER_SIZE];
-    DynamicStringArray *lines = createDynamicArray();
+    DynamicStringArray *lines = createDynamicStringArray();
     while (fgets(buffer, BUFFER_SIZE, file)) {
         char *line = (char*)malloc(strlen(buffer) + 1);
         if (!line) {
@@ -34,12 +34,12 @@ int main(int argc, char** argv) {
             return 1;
         }
         strcpy(line, buffer);
-        pushDynamicArray(lines, line);
+        pushDynamicStringArray(lines, line);
     }
     fclose(file);
     // horizontal appearances
     int appearances = 0;
-    for (int i = 0; i < lines->size; i++) {
+    for (size_t i = 0; i < lines->size; i++) {
         regmatch_t matches[1];
         char *line = lines->data[i];
         while (regexec(&regex, line, 1, matches, 0) == 0) {
@@ -50,8 +50,8 @@ int main(int argc, char** argv) {
     regfree(&regex);
     //printf("horizontal done: %d\n", appearances);
     // vertical appearances
-    for (int j = 0; lines->data[1][j] != '\0'; j++) {
-        for (int i = 0; i < lines->size - 3; i++) {
+    for (size_t j = 0; lines->data[1][j] != '\0'; j++) {
+        for (size_t i = 0; i < lines->size - 3; i++) {
             if (lines->data[i][j] == 'X' && lines->data[i + 1][j] == 'M'
                 && lines->data[i + 2][j] == 'A' && lines->data[i + 3][j] == 'S') {
                 appearances++;
@@ -63,8 +63,8 @@ int main(int argc, char** argv) {
     }
     //printf("vertical done: %d\n", appearances);
     // diagonal appearances upper left to lower right
-    for (int i = 0; i < lines->size - 3; i++) {
-        for (int j = 0; lines->data[i][j + 3] != '\0'; j++) {
+    for (size_t i = 0; i < lines->size - 3; i++) {
+        for (size_t j = 0; lines->data[i][j + 3] != '\0'; j++) {
             if (lines->data[i][j] == 'X' && lines->data[i + 1][j + 1] == 'M'
                 && lines->data[i + 2][j + 2] == 'A' && lines->data[i + 3][j + 3] == 'S') {
                 appearances++;
@@ -76,8 +76,8 @@ int main(int argc, char** argv) {
     }
     //printf("diagonal \\ done: %d\n", appearances);
     // diagonal appearances upper right to lower left
-    for (int i = 0; i < lines->size - 3; i++) {
-        for (int j = 3; lines->data[i][j] != '\0'; j++) {
+    for (size_t i = 0; i < lines->size - 3; i++) {
+        for (size_t j = 3; lines->data[i][j] != '\0'; j++) {
             if (lines->data[i][j] == 'X' && lines->data[i + 1][j - 1] == 'M'
                 && lines->data[i + 2][j - 2] == 'A' && lines->data[i + 3][j - 3] == 'S') {
                 appearances++;
@@ -88,8 +88,8 @@ int main(int argc, char** argv) {
         }
     }
     //printf("diagonal / done\n");
-    destroyDynamicArray(lines);
-    for (int i = 0; i < lines->size; i++) {
+    destroyDynamicStringArray(lines);
+    for (size_t i = 0; i < lines->size; i++) {
         free(lines->data[i]);
     }
     printf("XMAS appearances: %d\n", appearances);

@@ -7,7 +7,7 @@
 #define DELIMITER " "
 
 int testSafe(DynamicArray *report) {
-    for (int i = 1; i < report->size; i++) {
+    for (size_t i = 1; i < report->size; i++) {
         if (report->data[0] < report->data[1] && report->data[i] < report->data[i - 1]) {
             return 0;
         } else if (report->data[0] > report->data[1] && report->data[i] > report->data[i - 1]) {
@@ -22,13 +22,13 @@ int testSafe(DynamicArray *report) {
     return 1;
 }
 
-DynamicArray *removeFromDynArr(DynamicArray *array, int index) {
+DynamicArray *removeFromDynArr(DynamicArray *array, size_t index) {
     assert(index < array->size);
     DynamicArray *newArray = createDynamicArray();
     if(!newArray) {
         return NULL;
     }
-    for(int i = 0; i < array->size; i++) {
+    for(size_t i = 0; i < array->size; i++) {
         if (i != index) {
             pushDynamicArray(newArray, array->data[i]);
         }
@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
             safeReports++;
             safeReportsPart2++;
         } else {
-            for (int i = 0; i < report->size; i++) {
+            for (size_t i = 0; i < report->size; i++) {
                 DynamicArray *newReport = removeFromDynArr(report, i);
                 if (!newReport) {
                     fprintf(stderr, "Unable to allocate memory\n");

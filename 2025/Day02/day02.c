@@ -25,15 +25,15 @@ int main(int argc, char **argv) {
     fgets(buffer, BUFFER_SIZE, file);
     fclose(file);
 
-    DynamicStringArray *intervals = createDynamicArray();
+    DynamicStringArray *intervals = createDynamicStringArray();
     char *interval = strtok(buffer, DELIMITER);
     do {
-        pushDynamicArray(intervals, interval);
+        pushDynamicStringArray(intervals, interval);
     } while ((interval = strtok(NULL, DELIMITER)) != NULL);
     
     uint64_t count = 0;
     uint64_t count_p2 = 0;
-    for (int i = 0; i < intervals->size; ++i) {
+    for (size_t i = 0; i < intervals->size; ++i) {
         uint64_t rangeStart = atoll(strtok(intervals->data[i], "-"));
         uint64_t rangeEnd = atoll(strtok(NULL, "-"));
         
@@ -72,6 +72,6 @@ int main(int argc, char **argv) {
     }
     printf("Sum of invalid IDs %" PRIu64 "\n", count);
     printf("Sum of invalid IDs Part 2 %" PRIu64 "\n", count_p2);
-    destroyDynamicArray(intervals);
+    destroyDynamicStringArray(intervals);
     return 0;
 }

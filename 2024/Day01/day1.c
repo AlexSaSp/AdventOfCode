@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
     sort(array1->data, array1->size);
     sort(array2->data, array2->size);
     int totalDistance = 0;
-    for (int i = 0; i < array1->size; i++) {
+    for (size_t i = 0; i < array1->size; i++) {
         if (array1->data[i] < array2->data[i]) {
             totalDistance += array2->data[i] - array1->data[i];
         } else {
@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
     DynamicArray *appearences = createDynamicArray();
     pushDynamicArray(numbers, array1->data[0]);
     pushDynamicArray(appearences, 1);
-    for (int i = 0; i < array1->size; i++) {
+    for (size_t i = 0; i < array1->size; i++) {
         if (array1->data[i] != numbers->data[numbers->size - 1]) {
             pushDynamicArray(numbers, array1->data[i]);
             pushDynamicArray(appearences, 1);
@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
     }
     int posInAppearences = 0;
     int similarityScore = 0;
-    for (int i = 0; i < array2->size; i++) {
+    for (size_t i = 0; i < array2->size; i++) {
         while (array2->data[i] > numbers->data[posInAppearences]) {
             posInAppearences++;
         }

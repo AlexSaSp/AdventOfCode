@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    DynamicStringArray *muls = createDynamicArray();
+    DynamicStringArray *muls = createDynamicStringArray();
     char buffer[BUFFER_SIZE];
     while (fgets(buffer, BUFFER_SIZE, file)) {
         const char *line = buffer;
@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
             }
             strncpy(mul, line + matches[0].rm_so, matches[0].rm_eo - matches[0].rm_so);
             mul[matches[0].rm_eo - matches[0].rm_so] = '\0';
-            pushDynamicArray(muls, mul);
+            pushDynamicStringArray(muls, mul);
             line += matches[0].rm_eo;
         }
     }
@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
     long total_mul = 0;
     long total_mul_with_do_dont = 0;
     int mul_enabled = 1;
-    for (int i = 0; i < muls->size; i++) {
+    for (size_t i = 0; i < muls->size; i++) {
         if (strcmp(muls->data[i], "do()") == 0) {
             mul_enabled = 1;
             continue;
@@ -65,9 +65,9 @@ int main(int argc, char **argv) {
     }
     printf("Sum of all multuplication: %ld\n", total_mul);
     printf("Sum of all multuplication with do()/don't(): %ld\n", total_mul_with_do_dont);
-    for (int i = 0; i < muls->size; i++) {
+    for (size_t i = 0; i < muls->size; i++) {
         free(muls->data[i]);
     }
-    destroyDynamicArray(muls);
+    destroyDynamicStringArray(muls);
     return 0;
 }

@@ -5,11 +5,11 @@
 
 typedef struct _dynamicStringArray {
     char **data;
-    int size;
-    int capacity;
+    size_t size;
+    size_t capacity;
 } DynamicStringArray;
 
-DynamicStringArray *createDynamicArray() {
+DynamicStringArray *createDynamicStringArray() {
     DynamicStringArray *array = (DynamicStringArray*)malloc(sizeof(DynamicStringArray));
     if (!array) {
         return NULL;
@@ -24,12 +24,12 @@ DynamicStringArray *createDynamicArray() {
     return array;
 }
 
-void destroyDynamicArray(DynamicStringArray *array) {
+void destroyDynamicStringArray(DynamicStringArray *array) {
     free(array->data);
     free(array);
 }
 
-void pushDynamicArray(DynamicStringArray *array, char *value) {
+void pushDynamicStringArray(DynamicStringArray *array, char *value) {
     if (array->size == array->capacity) {
         array->capacity *= 2;
         array->data = (char**)realloc(array->data, sizeof(char*) * array->capacity);
@@ -38,7 +38,7 @@ void pushDynamicArray(DynamicStringArray *array, char *value) {
     array->size++;
 }
 
-void popDynamicArray(DynamicStringArray *array) {
+void popDynamicStringArray(DynamicStringArray *array) {
     if (array->size == 0) {
         return;
     }

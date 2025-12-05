@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
     }
 
     char buffer[BUFFER_SIZE];
-    DynamicStringArray *lines = createDynamicArray();
+    DynamicStringArray *lines = createDynamicStringArray();
     while (fgets(buffer, BUFFER_SIZE, file)) {
         char *line = (char*)malloc(strlen(buffer) + 1);
         if (!line) {
@@ -50,21 +50,21 @@ int main(int argc, char** argv) {
             return 1;
         }
         strcpy(line, buffer);
-        pushDynamicArray(lines, line);
+        pushDynamicStringArray(lines, line);
     }
     fclose(file);
     
     int appearances = 0;
-    for (int i = 0; i < lines->size - 2; i++) {
-        for (int j = 0; lines->data[i][j + 2] != '\0'; j++) {
+    for (size_t i = 0; i < lines->size - 2; i++) {
+        for (size_t j = 0; lines->data[i][j + 2] != '\0'; j++) {
             if (match_diag_ul_lr(lines->data, i, j) && match_diag_ur_ll(lines->data, i, j + 2)) {
                 appearances++;
             }
         }
     }
 
-    destroyDynamicArray(lines);
-    for (int i = 0; i < lines->size; i++) {
+    destroyDynamicStringArray(lines);
+    for (size_t i = 0; i < lines->size; i++) {
         free(lines->data[i]);
     }
     printf("X-MAS appearances: %d\n", appearances);
