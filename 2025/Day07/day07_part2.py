@@ -1,6 +1,6 @@
 import sys
 
-def get_num_timelines(line: int, pos: int, lines: list[str], cache: dict[(int, int), int]) -> int:
+def get_num_timelines(line: int, pos: int, lines: list[str], cache: dict[tuple[int, int], int]) -> int:
     if line == len(lines) - 1:
         return 0
     if (line, pos) in cache:
