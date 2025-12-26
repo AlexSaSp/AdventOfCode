@@ -1,16 +1,20 @@
 from sys import argv
-from itertools import product
+from itertools import product, islice
 from fractions import Fraction
 
 
+ZERO = Fraction(0)
+ONE = Fraction(1)
+
+
 def make_matrix(buttons: list[list[int]], joltage: tuple[int, ...]) -> list[list[Fraction]]:
-    matrix = [[Fraction(0)] * (len(buttons) + 1) for _ in range(len(joltage))]
+    matrix = [[ZERO] * (len(buttons) + 1) for _ in range(len(joltage))]
     for i in range(len(joltage)):
         matrix[i][-1] = Fraction(joltage[i])
     for j in range(len(buttons)):
         button = buttons[j]
         for i in button:
-            matrix[i][j] = Fraction(1)
+            matrix[i][j] = ONE
     return matrix
 
 
@@ -34,7 +38,7 @@ def normalize(line: list[Fraction]):
 
 def eliminate(idx: int, matrix: list[list[Fraction]]) -> None:
     matrix.sort(reverse=True)
-    line_for_elim = next(((l_idx, l) for l_idx, l in enumerate(matrix) if l[idx] == 1 and l[:idx] == [0] * idx), (len(matrix), None))
+    line_for_elim = next(((l_idx, l) for l_idx, l in enumerate(matrix) if l[idx] == 1 and all(fraction == 0 for fraction in islice(l, idx))), (len(matrix), None))
     for i in range(line_for_elim[0] + 1, len(matrix)):
         if matrix[i][idx] == 0:
             break
@@ -54,14 +58,14 @@ def init_amount(button: list[int], joltage: tuple[int, ...]) -> int:
     return min_el
 
 def find_smallest_sol(matrix: list[list[Fraction]], buttons: list[list[int]], joltage: tuple[int, ...]):
-    unique_sol = [False for _ in buttons]
+    unique_sol = [False] * len(buttons)
     assert len(buttons) == len(matrix[0]) - 1
     for line in matrix:
         if line[:-1] != [0] * (len(line) - 1):
-            unique_sol[line.index(Fraction(1))] = True
+            unique_sol[line.index(ONE)] = True
 
     smallest_sol = 10000000
-    solutions = [Fraction(0)] * len(buttons)
+    solutions = [ZERO] * len(buttons)
     not_unique_idx = [i for i, j in enumerate(unique_sol) if not j]
     ranges = [[j for j in range(0, init_amount(buttons[i], joltage) + 1)] for i in not_unique_idx]
     if len(not_unique_idx) == 0:
@@ -73,9 +77,9 @@ def find_smallest_sol(matrix: list[list[Fraction]], buttons: list[list[int]], jo
 
             negative = False
             for i in range(len(matrix) - 1, -1, -1):
-                if matrix[i][:-1] == [0] * (len(matrix[i]) - 1):
+                if all(e == 0 for e in islice(matrix[i], len(matrix[i]) - 1)):
                     continue
-                sol_idx = matrix[i].index(Fraction(1))
+                sol_idx = matrix[i].index(ONE)
                 sol = matrix[i][-1]
                 for j in range(sol_idx + 1, len(matrix[i]) - 1):
                     sol -= matrix[i][j] * solutions[j]
@@ -101,8 +105,8 @@ def main() -> None:
     lines_splitted = [line.split(' ') for line in lines]
     machines = [(
         line[0].removeprefix('[').removesuffix(']'),
-        [list(map(lambda x: int(x), t.removeprefix('(').removesuffix(')').split(','))) for t in line[1:len(line)-1]],
-        tuple(int(i) for i in line[len(line)-1].removeprefix('{').removesuffix('}\n').split(','))
+        [list(map(lambda x: int(x), t.removeprefix('(').removesuffix(')').split(','))) for t in line[1:-1]],
+        tuple(int(i) for i in line[-1].removeprefix('{').removesuffix('}\n').split(','))
         ) for line in lines_splitted]
 
     sum_fewest_presses = 0
